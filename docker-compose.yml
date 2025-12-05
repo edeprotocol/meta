@@ -1,0 +1,54 @@
+# Synthetic Field Layer - Docker Compose Configuration
+version: "3.8"
+
+services:
+  sfl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sfl:latest
+    container_name: sfl-server
+    ports:
+      - "8420:8420"
+    volumes:
+      - field_memory:/app/field_memory
+    environment:
+      - SFL_HOST=0.0.0.0
+      - SFL_PORT=8420
+      - SFL_WORKERS=1
+      - SFL_LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8420/health').raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+        reservations:
+          cpus: "0.5"
+          memory: 1G
+
+  # Optional: Redis for distributed state (future)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: sfl-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+
+volumes:
+  field_memory:
+    driver: local
+  # redis_data:
+  #   driver: local
+
+networks:
+  default:
+    name: sfl-network
