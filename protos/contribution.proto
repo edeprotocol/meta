@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package sfl.v1;
+
+message ContributionScore {
+  uint64 reports_submitted = 1;
+  float gradient_utility = 2;
+  float data_uniqueness = 3;
+  uint32 access_level = 4;    // 0-3
+}

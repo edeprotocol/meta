@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package sfl.v1;
+
+message UncertaintyBundle {
+  float epistemic = 1;    // Désaccord critics
+  float aleatoric = 2;    // Bruit données
+  float model = 3;        // Incertitude modèle
+  float adversarial = 4;  // Suspicion gaming
+  float scalar = 5;       // Agrégation
+}

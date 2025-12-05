@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package sfl.v1;
+
+import "alloc_signal.proto";
+import "uncertainty.proto";
+
+message GradientPacket {
+  bytes nh_id = 1;
+  Tensor param_grad = 2;           // Shape: [d_p, H]
+  repeated float horizons = 3;      // Valeurs des horizons
+  AllocSignal alloc_signal = 4;
+  UncertaintyBundle uncertainty = 5;
+  repeated bytes critic_ids = 6;    // Critics ayant contribué
+  uint64 timestamp = 7;
+}
+
+message Tensor {
+  repeated uint32 shape = 1;
+  repeated float data = 2;
+  string dtype = 3;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package sfl.v1;
+
+message Report {
+  bytes nh_id = 1;           // 32 bytes, handle sur le pattern
+  Tensor state = 2;          // État observé
+  Tensor action = 3;         // Action exécutée
+  Tensor cost = 4;           // Coût consommé
+  Tensor outcome = 5;        // Résultat
+  uint64 timestamp = 6;      // Horodatage
+  repeated bytes lineage = 7; // Ancêtres (32 bytes chacun)
+}
+
+message Tensor {
+  repeated uint32 shape = 1;
+  repeated float data = 2;
+  string dtype = 3;          // "float32", "float64", etc.
+}
